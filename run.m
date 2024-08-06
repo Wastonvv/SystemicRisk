@@ -93,7 +93,7 @@ measures_setup = {
     'Spillover'          true     true     true     @(temp,out,analyze)run_spillover(ds,sn,temp,out,bw,10,'G',2,4,analyze);
     'TailDependence'     true     true     true     @(temp,out,analyze)run_tail_dependence(ds,sn,temp,out,bw,0.10,0.5,0.05,100,analyze);
 };
-
+measures_setup = {'Default'            true     false     false     @(temp,out,analyze)run_default(ds,sn,temp,out,bw,'BSM',3,0.08,2,0.55,0.10,100,5,0.95,analyze)};
 enabled_all = [measures_setup{:,2}];
 
 if (~any(enabled_all))
@@ -154,7 +154,7 @@ end
 
 ml(moff:end) = [];
 md(:,moff:end) = [];
-
+%%
 if (~ds.SupportsComparison)
     warning('MATLAB:SystemicRisk','The comparison of systemic risk measures cannot be performed because the dataset does not support it.');
 else

@@ -305,11 +305,22 @@ function write_results(ds,temp,out)
     labels = [{'Firms'} ds.MLabels.'];
 
     if (ispc())
-        xlswrite(out,[labels; ds.MLabels num2cell(ds.DistanceCorrelation)],1); %#ok<XLSWT> 
-        xlswrite(out,[labels; ds.MLabels num2cell(ds.RMSSimilarity)],2); %#ok<XLSWT> 
+        combinedData = [labels; ds.MLabels, num2cell(ds.DistanceCorrelation)];
+        T = cell2table(combinedData);
+        writetable(T, out, 'Sheet', 1);
+        combinedData = [labels; ds.MLabels, num2cell(ds.RMSSimilarity)];
+        T = cell2table(combinedData);
+        writetable(T, out, 'Sheet', 2);
+        %xlswrite(out,[labels; ds.MLabels num2cell(ds.RMSSimilarity)],2); %#ok<XLSWT> 
     else
-        xlswrite(out,[labels; ds.MLabels num2cell(ds.DistanceCorrelation)],ds.LabelsSheetsSimple{1}); %#ok<XLSWT> 
-        xlswrite(out,[labels; ds.MLabels num2cell(ds.RMSSimilarity)],ds.LabelsSheetsSimple{2}); %#ok<XLSWT> 
+        combinedData = [labels; ds.MLabels, num2cell(ds.DistanceCorrelation)];
+        T = cell2table(combinedData); %, 'VariableNames', {'Label1', 'Label2', 'Label3'});
+        writetable(T, out, 'Sheet', ds.LabelsSheetsSimple{1});
+        combinedData = [labels; ds.MLabels, num2cell(ds.RMSSimilarity)];
+        T = cell2table(combinedData);
+        writetable(T, out, 'Sheet', ds.LabelsSheetsSimple{2});
+        %xlswrite(out,[labels; ds.MLabels num2cell(ds.DistanceCorrelation)],ds.LabelsSheetsSimple{1}); %#ok<XLSWT> 
+        %xlswrite(out,[labels; ds.MLabels num2cell(ds.RMSSimilarity)],ds.LabelsSheetsSimple{2}); %#ok<XLSWT> 
     end
 
     sm = ds.SM;
